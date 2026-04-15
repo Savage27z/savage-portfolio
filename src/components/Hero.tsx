@@ -2,6 +2,7 @@
 
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 
 function CountUp({ target, duration = 2 }: { target: number; duration?: number }) {
   const count = useMotionValue(0);
@@ -159,10 +160,14 @@ export default function Hero() {
                 ease: "linear",
               }}
             />
-            <div className="w-[250px] h-[250px] md:w-[350px] md:h-[350px] rounded-full bg-gradient-to-br from-violet-500/20 to-cyan-400/10 border border-zinc-800 flex items-center justify-center">
-              <span className="text-6xl md:text-8xl font-bold text-violet-400 select-none">
-                S✰
-              </span>
+            <div className="w-[250px] h-[250px] md:w-[350px] md:h-[350px] rounded-full bg-gradient-to-br from-violet-500/20 to-cyan-400/10 border border-zinc-800 overflow-hidden relative">
+              <Image
+                src="/images/avatar.jpg"
+                alt="SAVAGE✰"
+                fill
+                className="object-cover"
+                priority
+              />
             </div>
           </motion.div>
         </div>
