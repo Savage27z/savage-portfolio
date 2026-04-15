@@ -1,6 +1,7 @@
 "use client";
 
 import ScrollReveal from "./ScrollReveal";
+import Image from "next/image";
 
 export default function About() {
   return (
@@ -12,13 +13,18 @@ export default function About() {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           <div className="md:col-span-2">
             <ScrollReveal>
-              <div className="bg-surface border border-border rounded-xl p-8 aspect-square flex flex-col items-center justify-center">
-                <span className="text-7xl font-bold text-violet-400 select-none">
-                  S✰
-                </span>
-                <p className="text-xl font-semibold text-text-primary mt-4">
-                  SAVAGE✰
-                </p>
+              <div className="bg-surface border border-border rounded-xl overflow-hidden aspect-square relative">
+                <Image
+                  src="/images/avatar.jpg"
+                  alt="SAVAGE✰"
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6">
+                  <p className="text-xl font-semibold text-text-primary">
+                    SAVAGE✰
+                  </p>
+                </div>
               </div>
             </ScrollReveal>
           </div>
