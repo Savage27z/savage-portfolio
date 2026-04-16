@@ -1,14 +1,12 @@
 "use client";
 
-import { Home, FolderKanban, User, Mail } from "lucide-react";
-import ScrollReveal from "./ScrollReveal";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Mail } from "lucide-react";
 
-const dirLinks = [
-  { label: "Home", href: "#home", icon: Home },
-  { label: "Projects", href: "#projects", icon: FolderKanban },
-  { label: "About", href: "#about", icon: User },
-  { label: "Contact", href: "#contact", icon: Mail },
-];
+gsap.registerPlugin(ScrollTrigger);
 
 function GitHubIcon() {
   return (
@@ -23,6 +21,45 @@ function XIcon() {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
     </svg>
+  );
+}
+
+function SplitHeading({
+  text,
+  className,
+}: {
+  text: string;
+  className?: string;
+}) {
+  const ref = useRef<HTMLHeadingElement>(null);
+
+  useGSAP(
+    () => {
+      if (!ref.current) return;
+      const words = ref.current.querySelectorAll(".word-inner");
+      gsap.from(words, {
+        y: "100%",
+        opacity: 0,
+        stagger: 0.08,
+        duration: 0.7,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ref.current,
+          start: "top 80%",
+        },
+      });
+    },
+    { scope: ref }
+  );
+
+  return (
+    <h2 ref={ref} className={className}>
+      {text.split(" ").map((word, i) => (
+        <span key={i} className="inline-block overflow-hidden mr-[0.3em]">
+          <span className="word-inner inline-block">{word}</span>
+        </span>
+      ))}
+    </h2>
   );
 }
 
@@ -45,81 +82,130 @@ const socialLinks = [
 ];
 
 export default function Footer() {
-  const handleScroll = (href: string) => {
-    const el = document.querySelector(href);
-    el?.scrollIntoView({ behavior: "smooth" });
-  };
+  const footerRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (!footerRef.current) return;
+
+      const targets = [".footer-sub", ".footer-cta", ".social-icon", ".footer-bottom"];
+      gsap.set(targets, { opacity: 0, y: 20 });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: footerRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      tl.to(".footer-sub", {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power2.out",
+      })
+        .to(
+          ".footer-cta",
+          { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+          "-=0.3"
+        )
+        .to(
+          ".social-icon",
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.08,
+            duration: 0.5,
+            ease: "power2.out",
+          },
+          "-=0.3"
+        )
+        .to(
+          ".footer-bottom",
+          { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+          "-=0.2"
+        );
+    },
+    { scope: footerRef }
+  );
 
   return (
-    <footer id="contact" className="py-20 sm:py-28 md:py-32 px-4 sm:px-6 lg:px-8">
+    <footer
+      ref={footerRef}
+      id="contact"
+      className="py-20 sm:py-28 md:py-32 px-4 sm:px-6 lg:px-8"
+    >
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
-          <ScrollReveal className="md:col-span-3">
-            <div className="bg-surface border border-border rounded-xl p-6 sm:p-8 h-full transition-all duration-300 hover:border-violet-500/40 hover:shadow-[0_0_20px_rgba(168,85,247,0.1)]">
-              <span className="font-mono text-lg tracking-wider text-text-primary">
-                SAVAGE✰
-              </span>
-              <p className="font-mono text-xs tracking-wider text-text-muted uppercase mt-3">
-                {"//"} FEEL FREE TO REACH OUT FOR COLLABORATIONS
-              </p>
-              <div className="flex gap-3 mt-6">
-                {socialLinks.map((s) => (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    target={s.href.startsWith("mailto") ? undefined : "_blank"}
-                    rel={
-                      s.href.startsWith("mailto")
-                        ? undefined
-                        : "noopener noreferrer"
-                    }
-                    className="w-10 h-10 bg-zinc-800 rounded-full flex items-center justify-center text-zinc-400 hover:bg-violet-500/20 hover:text-violet-400 transition-all duration-300"
-                    aria-label={s.label}
-                  >
-                    {s.icon}
-                  </a>
-                ))}
-              </div>
-            </div>
-          </ScrollReveal>
+        <div className="text-center">
+          <SplitHeading
+            text="READY TO BUILD?"
+            className="font-display text-[32px] md:text-[48px] uppercase text-text-primary"
+          />
+          <p className="footer-sub font-mono text-[12px] uppercase tracking-[0.15em] text-text-tertiary mt-4">
+            {"// feel free to reach out for collaborations"}
+          </p>
 
-          <ScrollReveal delay={0.1} className="md:col-span-2">
-            <div className="bg-surface border border-border rounded-xl p-6 sm:p-8 h-full transition-all duration-300 hover:border-violet-500/40 hover:shadow-[0_0_20px_rgba(168,85,247,0.1)]">
-              <span className="font-mono text-xs tracking-widest text-violet-400 uppercase">
-                Directory
+          <div className="footer-cta mt-10">
+            <a
+              href="mailto:savage27zzz@gmail.com"
+              className="group relative inline-block overflow-hidden font-mono text-[13px] uppercase tracking-wide px-8 py-3 transition-colors duration-250"
+              style={{
+                border: "1px solid var(--accent-gold)",
+                color: "var(--accent-gold)",
+              }}
+            >
+              <span
+                className="absolute inset-0 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-250"
+                style={{ background: "var(--accent-gold)" }}
+              />
+              <span className="relative z-10 group-hover:text-bg-primary transition-colors duration-250">
+                REACH OUT →
               </span>
-              <nav className="mt-4 space-y-3">
-                {dirLinks.map((link) => {
-                  const Icon = link.icon;
-                  return (
-                    <button
-                      key={link.href}
-                      onClick={() => handleScroll(link.href)}
-                      className="flex items-center gap-3 text-sm text-text-secondary hover:text-text-primary transition-colors duration-300 w-full text-left"
-                    >
-                      <Icon size={16} />
-                      {link.label}
-                    </button>
-                  );
-                })}
-              </nav>
-            </div>
-          </ScrollReveal>
+            </a>
+          </div>
+
+          <div className="flex items-center justify-center gap-3 mt-8">
+            {socialLinks.map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target={s.href.startsWith("mailto") ? undefined : "_blank"}
+                rel={
+                  s.href.startsWith("mailto")
+                    ? undefined
+                    : "noopener noreferrer"
+                }
+                className="social-icon w-10 h-10 rounded-full flex items-center justify-center text-text-secondary hover:text-accent-gold transition-all duration-300"
+                style={{
+                  background: "var(--bg-secondary)",
+                  border: "1px solid var(--border-subtle)",
+                }}
+                aria-label={s.label}
+              >
+                {s.icon}
+              </a>
+            ))}
+          </div>
         </div>
 
-        <ScrollReveal delay={0.2}>
-          <div className="mt-8 border-t border-zinc-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-text-muted font-mono">
-              &copy; 2025 SAVAGE✰ | Built with obsession
-            </p>
-            <div className="bg-surface border border-border rounded-full px-4 py-2 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-status-green animate-pulse-green" />
-              <span className="text-xs font-mono text-text-muted">
-                STATUS: AVAILABLE
-              </span>
-            </div>
+        <div
+          className="footer-bottom mt-16 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+          style={{ borderTop: "1px solid var(--border-subtle)" }}
+        >
+          <p className="font-mono text-[12px] text-text-tertiary">
+            © 2025 SAVAGE✰ | Forged in code
+          </p>
+          <div className="flex items-center gap-2">
+            <span
+              className="w-2 h-2 rounded-full animate-pulse-gold"
+              style={{ background: "var(--accent-gold)" }}
+            />
+            <span className="font-mono text-[12px] text-text-tertiary">
+              AVAILABLE
+            </span>
           </div>
-        </ScrollReveal>
+        </div>
       </div>
     </footer>
   );
