@@ -1,29 +1,20 @@
 export const projects = [
   {
     title: "Polymarket Bot",
-    description:
-      "Automated prediction market trading bot with real-time odds analysis.",
+    description: "Reads prediction markets. Finds edge. Executes.",
     tag: "Python",
-    gradient: "from-violet-600/30 via-purple-900/20 to-zinc-900",
-    icon: "bot" as const,
     url: "https://github.com/Savage27z/Polymarket-bot",
   },
   {
     title: "mintBot",
-    description:
-      "High-speed NFT sniping bot for Solana mints with sub-second execution.",
+    description: "Solana mints drop. This bot gets there first.",
     tag: "TypeScript",
-    gradient: "from-cyan-600/30 via-teal-900/20 to-zinc-900",
-    icon: "zap" as const,
     url: "https://github.com/Savage27z/mintBot",
   },
   {
     title: "DEXTool Scanner",
-    description:
-      "Real-time DEX token scanner for detecting new listings and opportunities.",
+    description: "Scans every new token listing. Nothing slips past.",
     tag: "Python",
-    gradient: "from-amber-600/30 via-orange-900/20 to-zinc-900",
-    icon: "scan" as const,
     url: "https://github.com/Savage27z/SAVAGE-dextool-scanner",
   },
 ];
@@ -40,10 +31,10 @@ export const skills = [
 ];
 
 export const navLinks = [
-  { label: "Home", href: "#home", icon: "home" as const },
-  { label: "Projects", href: "#projects", icon: "folder" as const },
-  { label: "About", href: "#about", icon: "user" as const },
-  { label: "Contact", href: "#contact", icon: "mail" as const },
+  { label: "Home", href: "#home" },
+  { label: "Projects", href: "#projects" },
+  { label: "About", href: "#about" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export const socials = [

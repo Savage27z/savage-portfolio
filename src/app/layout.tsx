@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Cinzel, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const inter = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-inter",
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-display",
   display: "swap",
 });
 
-const jetbrainsMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
   variable: "--font-mono",
   display: "swap",
 });
@@ -36,8 +38,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+    <html lang="en" className={`${cinzel.variable} ${jetbrainsMono.variable}`}>
+      <body className="font-mono antialiased">{children}</body>
     </html>
   );
 }
